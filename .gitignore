@@ -36,3 +36,16 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.idea/.gitignore
+/application.log
+/.idea/aws.xml
+/.idea/dictionaries
+/dump.rdb
+/.idea/encodings.xml
+/.idea/jpa-buddy.xml
+/.idea/misc.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/log/ubots.log
+/log/ubots-test.log
+/.idea/uiDesigner.xml
+/.idea/vcs.xml
