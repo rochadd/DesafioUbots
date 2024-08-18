@@ -65,10 +65,6 @@ class ConsumerStressTest {
             }
         }
 
-        System.out.println("CartaoQueue size: " + cartoesQueue.size());
-        System.out.println("EmprestimoQueue size: " + emprestimosQueue.size());
-        System.out.println("OutroQueue size: " + outrosQueue.size());
-
         // Give enough time for all requests to be processed
         Thread.sleep(30000);
 
