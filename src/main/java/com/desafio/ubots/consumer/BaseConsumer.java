@@ -22,6 +22,8 @@ public abstract class BaseConsumer {
     }
 
     protected void consumer() {
+        String consumerName = getClass().getSimpleName();
+
         while (true) {
             try {
                 if (!queue.isEmpty()) {
@@ -30,7 +32,7 @@ public abstract class BaseConsumer {
                         executorService.submit(() -> {
                             try {
                                 // Simulate request processing
-                                log.info("Processing {} Request: {}", getClass().getSimpleName() , request.getContent());
+                                log.info("Processing {} Request: {}", consumerName , request.getContent());
                                 TimeUnit.SECONDS.sleep(2); // Simulate some processing time
                             } catch (InterruptedException e) {
                                 Thread.currentThread().interrupt();
@@ -40,12 +42,12 @@ public abstract class BaseConsumer {
                         });
                     } else {
                         // If the semaphore is not available, return the request to the queue
-                        log.info("Consumer busy, returning request to queue: {}", request.getContent());
+                        log.info("Consumer {} busy, returning request to queue: {}", consumerName, request.getContent());
                         queue.put(request); // Re-enqueue the request
                         try {
                             TimeUnit.SECONDS.sleep(1); // waiting next round
                         } catch (InterruptedException e) {
-                            log.error("Something went wrong here ... {} ", e.getMessage());
+                            log.error("Consumer {}: Something went wrong here ... {} ", consumerName, e.getMessage());
                         }
                     }
                 }
