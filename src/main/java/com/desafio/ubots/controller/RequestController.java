@@ -3,6 +3,8 @@ package com.desafio.ubots.controller;
 import com.desafio.ubots.com.desafio.ubots.model.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +26,7 @@ public class RequestController {
     }
 
     @PostMapping
-    public String handleRequest(@RequestBody Request request) {
+    public ResponseEntity<String> handleRequest(@RequestBody Request request) {
         String requestId = UUID.randomUUID().toString();
         switch (request.getType()) {
             case CARTAO -> redisTemplate.opsForHash().put(CARTAO.getSubject(), requestId, request);
@@ -32,6 +34,8 @@ public class RequestController {
             case OUTROS -> redisTemplate.opsForHash().put(OUTROS.getSubject(), requestId, request);
             default -> throw new IllegalArgumentException("Invalid request type");
         }
-        return "Request stored with ID: " + requestId;
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Location", "/api/requests/" + requestId)
+                .body("Request stored with ID: " + requestId);
     }
 }
