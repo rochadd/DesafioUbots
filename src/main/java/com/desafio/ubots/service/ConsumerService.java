@@ -1,6 +1,7 @@
 package com.desafio.ubots.service;
 
 import com.desafio.ubots.com.desafio.ubots.model.Request;
+import com.desafio.ubots.com.desafio.ubots.model.RequestType;
 import com.desafio.ubots.consumer.CartoesConsumer;
 import com.desafio.ubots.consumer.EmprestimosConsumer;
 import com.desafio.ubots.consumer.OutrosConsumer;
@@ -46,6 +47,21 @@ public class ConsumerService {
         startCartaoConsumer();
         startEmprestimoConsumer();
         startOutroConsumer();
+    }
+
+    public int queueInfo(RequestType type) {
+        switch (type) {
+            case CARTAO -> {
+                return cartoesQueue.size();
+            }
+            case EMPRESTIMO -> {
+                return emprestimosQueue.size();
+            }
+            case OUTROS -> {
+                return outrosQueue.size();
+            }
+            default -> throw new IllegalArgumentException("Invalid request type");
+        }
     }
 
     private ExecutorService createExecutor(String threadName) {
